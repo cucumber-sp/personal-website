@@ -5,6 +5,7 @@ type Theme = "light" | "dark";
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
+  isFontLoaded: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -19,18 +20,38 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       ? "dark"
       : "light";
   });
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    // Check if font is loaded
+    document.fonts.ready.then(() => {
+      const font = new FontFace(
+        "DotMatrix",
+        "url(/fonts/robotronfontelit.woff)",
+      );
+      font
+        .load()
+        .then(() => {
+          setIsFontLoaded(true);
+        })
+        .catch(() => {
+          console.warn("Failed to load DotMatrix font, using fallback");
+          setIsFontLoaded(false);
+        });
+    });
+  }, []);
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isFontLoaded }}>
       {children}
     </ThemeContext.Provider>
   );

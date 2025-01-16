@@ -84,7 +84,7 @@ const GlobalStyle = createGlobalStyle`
 
   @font-face {
     font-family: 'DotMatrix';
-    src: url('/fonts/DotMatrix.woff2') format('woff2');
+    src: url('/fonts/robotronfontepica.woff') format('woff');
     font-display: swap;
   }
 `;
