@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import ThemeSwitch from './ThemeSwitch';
-import { FaHome } from 'react-icons/fa';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import ThemeSwitch from "./ThemeSwitch";
+import { FaHome } from "react-icons/fa";
 
 const Nav = styled.nav`
   position: fixed;
@@ -53,15 +53,19 @@ const NavList = styled.ul`
 
 const NavItem = styled(motion.li)`
   position: relative;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -5px;
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background-image: radial-gradient(circle, var(--accent) 0.5px, transparent 0.5px);
+    background-image: radial-gradient(
+      circle,
+      var(--accent) 0.5px,
+      transparent 0.5px
+    );
     background-size: 4px 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -81,23 +85,23 @@ const NavLink = styled(Link)<{ $active?: boolean }>`
   transition: color 0.2s ease;
   position: relative;
   font-size: 1rem;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 2px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    transform: scaleX(${props => props.$active ? 1 : 0});
+    transform: scaleX(${(props) => (props.$active ? 1 : 0)});
     transform-origin: left;
     transition: transform 0.2s ease;
   }
 
   &:hover {
     color: var(--accent);
-    
+
     &::after {
       transform: scaleX(1);
     }
@@ -125,7 +129,7 @@ const MobileNavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  font-family: 'DotMatrix', monospace;
+  font-family: "DotMatrix", monospace;
   font-size: 1.5rem;
   margin-top: 4rem;
 `;
@@ -150,13 +154,17 @@ const HamburgerButton = styled.button`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -5px;
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background-image: radial-gradient(circle, var(--accent) 0.5px, transparent 0.5px);
+    background-image: radial-gradient(
+      circle,
+      var(--accent) 0.5px,
+      transparent 0.5px
+    );
     background-size: 4px 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -189,15 +197,11 @@ const HamburgerButton = styled.button`
   }
 `;
 
-interface HomeButtonProps {
-  $show: boolean;
-}
-
 const HomeButton = styled(Link)<{ $show: boolean }>`
   display: none;
 
   @media (max-width: 768px) {
-    display: ${props => props.$show ? 'flex' : 'none'};
+    display: ${(props) => (props.$show ? "flex" : "none")};
     position: fixed;
     top: 2rem;
     left: 2rem;
@@ -250,7 +254,7 @@ const MobileLangButton = styled.button<{ $active: boolean }>`
   font-weight: 500;
   min-width: 45px;
   background: transparent;
-  color: ${props => props.$active ? 'white' : 'var(--primary)'};
+  color: ${(props) => (props.$active ? "white" : "var(--primary)")};
   border: none;
   font-family: var(--font-matrix);
   transition: all 0.2s ease;
@@ -260,21 +264,21 @@ const MobileLangButton = styled.button<{ $active: boolean }>`
   border-radius: 4px;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: var(--accent);
-    opacity: ${props => props.$active ? 1 : 0};
+    opacity: ${(props) => (props.$active ? 1 : 0)};
     transition: opacity 0.2s ease;
     z-index: -1;
     border-radius: 4px;
   }
 
   &:hover {
-    color: ${props => props.$active ? 'white' : 'var(--accent)'};
+    color: ${(props) => (props.$active ? "white" : "var(--accent)")};
   }
 `;
 
@@ -316,7 +320,7 @@ const DesktopLanguageSwitch = styled.div`
 
 const LangButton = styled(MobileLangButton)`
   border-radius: 4px;
-  
+
   &::before {
     border-radius: 4px;
   }
@@ -329,12 +333,12 @@ const Navigation: React.FC = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-    document.body.style.overflow = !isOpen ? 'hidden' : 'auto';
+    document.body.style.overflow = !isOpen ? "hidden" : "auto";
   };
 
   const closeMenu = () => {
     setIsOpen(false);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
   const changeLanguage = (lng: string) => {
@@ -342,21 +346,21 @@ const Navigation: React.FC = () => {
   };
 
   const navItems = [
-    { path: '/', label: t('nav.home'), delay: 0.2 },
-    { path: '/about', label: t('nav.about'), delay: 0.3 },
-    { path: '/projects', label: t('nav.projects'), delay: 0.4 },
-    { path: '/experience', label: t('nav.experience'), delay: 0.5 },
-    { path: '/blog', label: t('nav.blog'), delay: 0.6 }
+    { path: "/", label: t("nav.home"), delay: 0.2 },
+    { path: "/about", label: t("nav.about"), delay: 0.3 },
+    { path: "/projects", label: t("nav.projects"), delay: 0.4 },
+    { path: "/experience", label: t("nav.experience"), delay: 0.5 },
+    { path: "/blog", label: t("nav.blog"), delay: 0.6 },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/') {
+    if (path === "/") {
       return location.pathname === path;
     }
     return location.pathname.startsWith(path);
   };
 
-  const showHomeButton = !isOpen && location.pathname !== '/';
+  const showHomeButton = !isOpen && location.pathname !== "/";
 
   return (
     <Nav>
@@ -369,7 +373,9 @@ const Navigation: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
             >
-              <NavLink to={item.path} $active={isActive(item.path)}>{item.label}</NavLink>
+              <NavLink to={item.path} $active={isActive(item.path)}>
+                {item.label}
+              </NavLink>
             </NavItem>
           ))}
         </NavList>
@@ -377,14 +383,14 @@ const Navigation: React.FC = () => {
         <DesktopControls>
           <DesktopLanguageSwitch>
             <LangButton
-              $active={i18n.language === 'en'}
-              onClick={() => changeLanguage('en')}
+              $active={i18n.language === "en"}
+              onClick={() => changeLanguage("en")}
             >
               EN
             </LangButton>
             <LangButton
-              $active={i18n.language === 'ru'}
-              onClick={() => changeLanguage('ru')}
+              $active={i18n.language === "ru"}
+              onClick={() => changeLanguage("ru")}
             >
               RU
             </LangButton>
@@ -397,9 +403,9 @@ const Navigation: React.FC = () => {
         <FaHome />
       </HomeButton>
 
-      <HamburgerButton 
+      <HamburgerButton
         onClick={toggleMenu}
-        className={isOpen ? 'open' : ''}
+        className={isOpen ? "open" : ""}
         aria-label="Menu"
       >
         <span></span>
@@ -410,10 +416,10 @@ const Navigation: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <MobileNav
-            initial={{ x: '100%' }}
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
           >
             <MobileNavList>
               {navItems.map((item) => (
@@ -423,8 +429,8 @@ const Navigation: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: item.delay }}
                 >
-                  <NavLink 
-                    to={item.path} 
+                  <NavLink
+                    to={item.path}
                     onClick={closeMenu}
                     $active={isActive(item.path)}
                   >
@@ -436,14 +442,14 @@ const Navigation: React.FC = () => {
             <MobileControls>
               <MobileLanguageSwitch>
                 <MobileLangButton
-                  $active={i18n.language === 'en'}
-                  onClick={() => changeLanguage('en')}
+                  $active={i18n.language === "en"}
+                  onClick={() => changeLanguage("en")}
                 >
                   EN
                 </MobileLangButton>
                 <MobileLangButton
-                  $active={i18n.language === 'ru'}
-                  onClick={() => changeLanguage('ru')}
+                  $active={i18n.language === "ru"}
+                  onClick={() => changeLanguage("ru")}
                 >
                   RU
                 </MobileLangButton>
@@ -457,4 +463,4 @@ const Navigation: React.FC = () => {
   );
 };
 
-export default Navigation; 
+export default Navigation;

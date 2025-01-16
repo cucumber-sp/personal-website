@@ -1,9 +1,16 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { FaGithub, FaEnvelope, FaHome, FaHistory, FaCode, FaTools, FaTelegram } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import {
+  FaGithub,
+  FaEnvelope,
+  FaHistory,
+  FaCode,
+  FaTools,
+  FaTelegram,
+} from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const HomeContainer = styled.div`
   min-height: calc(100vh - 200px);
@@ -24,7 +31,7 @@ const MainSection = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1.5rem;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
@@ -86,7 +93,7 @@ const MessageBubble = styled(motion.div)`
 
 const FirstMessage = styled(MessageBubble)`
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: -10px;
     top: 20px;
@@ -108,7 +115,7 @@ const FirstMessage = styled(MessageBubble)`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: -9px;
     top: 20px;
@@ -143,7 +150,7 @@ const StatsContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin-top: 0.75rem;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 0.5rem;
@@ -257,7 +264,7 @@ const ContactButton = styled(motion.a)`
 
   &:hover {
     border-color: var(--accent);
-    
+
     svg {
       transform: scale(1.1);
     }
@@ -267,7 +274,6 @@ const ContactButton = styled(motion.a)`
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const location = useLocation();
 
   return (
     <HomeContainer>
@@ -292,7 +298,7 @@ const Home: React.FC = () => {
             transition={{ duration: 0.4 }}
           >
             <SenderName>Andrey Onischenko</SenderName>
-            <p>{t('home.intro')}</p>
+            <p>{t("home.intro")}</p>
           </FirstMessage>
 
           <MessageBubble
@@ -300,10 +306,10 @@ const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
           >
-            <p>{t('home.messages.about')}</p>
+            <p>{t("home.messages.about")}</p>
             <StatsContainer>
               <StatButton
-                onClick={() => navigate('/experience')}
+                onClick={() => navigate("/experience")}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -311,13 +317,13 @@ const Home: React.FC = () => {
                   <FaHistory />
                 </div>
                 <div className="content">
-                  <h3>{t('home.stats.experience.value')}</h3>
-                  <p>{t('home.stats.experience.label')}</p>
+                  <h3>{t("home.stats.experience.value")}</h3>
+                  <p>{t("home.stats.experience.label")}</p>
                 </div>
                 <div className="mobile-arrow">→</div>
               </StatButton>
               <StatButton
-                onClick={() => navigate('/projects')}
+                onClick={() => navigate("/projects")}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -325,13 +331,13 @@ const Home: React.FC = () => {
                   <FaCode />
                 </div>
                 <div className="content">
-                  <h3>{t('home.stats.projects.value')}</h3>
-                  <p>{t('home.stats.projects.label')}</p>
+                  <h3>{t("home.stats.projects.value")}</h3>
+                  <p>{t("home.stats.projects.label")}</p>
                 </div>
                 <div className="mobile-arrow">→</div>
               </StatButton>
               <StatButton
-                onClick={() => navigate('/about')}
+                onClick={() => navigate("/about")}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -339,8 +345,8 @@ const Home: React.FC = () => {
                   <FaTools />
                 </div>
                 <div className="content">
-                  <h3>{t('home.stats.opensource.value')}</h3>
-                  <p>{t('home.stats.opensource.label')}</p>
+                  <h3>{t("home.stats.opensource.value")}</h3>
+                  <p>{t("home.stats.opensource.label")}</p>
                 </div>
                 <div className="mobile-arrow">→</div>
               </StatButton>
@@ -352,7 +358,7 @@ const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.6 }}
           >
-            <p>{t('home.messages.contact')}</p>
+            <p>{t("home.messages.contact")}</p>
             <ContactSection>
               <ContactButton
                 href="https://github.com/cucumber-sp"
@@ -362,7 +368,7 @@ const Home: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <FaGithub />
-                {t('home.contact.github')}
+                {t("home.contact.github")}
               </ContactButton>
               <ContactButton
                 href="mailto:your.email@example.com"
@@ -370,7 +376,7 @@ const Home: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <FaEnvelope />
-                {t('home.contact.email')}
+                {t("home.contact.email")}
               </ContactButton>
               <ContactButton
                 href="https://t.me/a_dzeta"
@@ -380,7 +386,7 @@ const Home: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <FaTelegram />
-                {t('home.contact.telegram')}
+                {t("home.contact.telegram")}
               </ContactButton>
             </ContactSection>
           </MessageBubble>
@@ -390,15 +396,19 @@ const Home: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.9 }}
           >
-            <p>{t('home.messages.blog')}</p>
+            <p>{t("home.messages.blog")}</p>
             <ContactButton
               as={motion.button}
-              onClick={() => navigate('/blog')}
+              onClick={() => navigate("/blog")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', marginTop: '0.5rem' }}
+              style={{
+                padding: "0.5rem 1rem",
+                fontSize: "0.85rem",
+                marginTop: "0.5rem",
+              }}
             >
-              {t('home.navigation.blog')} →
+              {t("home.navigation.blog")} →
             </ContactButton>
           </MessageBubble>
         </ChatSection>
@@ -407,4 +417,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home; 
+export default Home;

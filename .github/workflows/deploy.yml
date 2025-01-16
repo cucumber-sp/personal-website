@@ -44,6 +44,12 @@ jobs:
           else
             pnpm install
           fi
+
+      - name: Type check
+        run: pnpm type-check
+
+      - name: Lint
+        run: pnpm lint
         
       - name: Build website
         run: pnpm build
