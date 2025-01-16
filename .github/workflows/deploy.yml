@@ -2,13 +2,13 @@ name: Deploy Website
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -45,12 +45,12 @@ jobs:
 
       - name: Lint
         run: pnpm lint
-        
+
       - name: Build website
         run: pnpm build
         env:
           CI: true
-          
+
       - name: Deploy to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -60,4 +60,4 @@ jobs:
           source: "dist/*"
           target: "/home/${{ secrets.SSH_USERNAME }}/personal-website"
           strip_components: 1
-          rm: true 
+          rm: true

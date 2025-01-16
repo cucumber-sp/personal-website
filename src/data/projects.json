@@ -43,7 +43,13 @@
     {
       "id": "personal-website",
       "category": "personal",
-      "tech": ["React", "TypeScript", "Styled Components", "Framer Motion", "i18next"],
+      "tech": [
+        "React",
+        "TypeScript",
+        "Styled Components",
+        "Framer Motion",
+        "i18next"
+      ],
       "github": "https://github.com/cucumber-sp/personal-website",
       "actions": [
         {
@@ -61,4 +67,4 @@
       ]
     }
   ]
-} 
+}

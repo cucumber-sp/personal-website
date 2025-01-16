@@ -1,68 +1,76 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useEffect, useRef, memo, useCallback } from "react";
+import styled from "styled-components";
 
-const Cursor = styled(motion.div)`
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-`;
+const Cursor = styled("div")({
+  width: "20px",
+  height: "20px",
+  background: "var(--accent)",
+  borderRadius: "50%",
+  position: "fixed",
+  pointerEvents: "none",
+  zIndex: 9999,
+  opacity: 0.5,
+  mixBlendMode: "difference",
+  transition: "transform 0.1s ease",
+  transform: "translate(-50%, -50%) scale(1)",
+
+  "@media (hover: none) and (pointer: coarse)": {
+    display: "none",
+  },
+});
 
 const MouseFollower: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+  const isMoving = useRef(false);
+  const lastX = useRef(0);
+  const lastY = useRef(0);
 
-  const springConfig = { damping: 25, stiffness: 700 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+  const updateCursorPosition = useCallback((x: number, y: number) => {
+    if (!cursorRef.current) return;
+
+    const scale = isMoving.current ? 0.8 : 1;
+    cursorRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+
+    lastX.current = x;
+    lastY.current = y;
+  }, []);
+
+  const onMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!cursorRef.current) return;
+
+      isMoving.current = true;
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
+      rafRef.current = requestAnimationFrame(() => {
+        updateCursorPosition(e.clientX, e.clientY);
+        setTimeout(() => {
+          isMoving.current = false;
+          updateCursorPosition(e.clientX, e.clientY);
+        }, 100);
+      });
+    },
+    [updateCursorPosition],
+  );
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 10);
-      cursorY.set(e.clientY - 10);
-    };
+    if (navigator.maxTouchPoints > 0) return;
 
-    const handleMouseEnter = () => setIsVisible(true);
-    const handleMouseLeave = () => setIsVisible(false);
-
-    // Only enable custom cursor on non-touch devices
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (!isTouchDevice) {
-      window.addEventListener('mousemove', moveCursor);
-      window.addEventListener('mouseenter', handleMouseEnter);
-      window.addEventListener('mouseleave', handleMouseLeave);
-    }
-
+    document.addEventListener("mousemove", onMouseMove);
     return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mouseenter', handleMouseEnter);
-      window.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener("mousemove", onMouseMove);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
-  }, [cursorX, cursorY]);
+  }, [onMouseMove]);
 
-  // Don't render cursor on touch devices
-  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-    return null;
-  }
+  if (navigator.maxTouchPoints > 0) return null;
 
-  return (
-    <Cursor
-      style={{
-        x: cursorXSpring,
-        y: cursorYSpring,
-        opacity: isVisible ? 1 : 0,
-      }}
-    />
-  );
+  return <Cursor ref={cursorRef} />;
 };
 
-export default MouseFollower; 
+export default memo(MouseFollower);

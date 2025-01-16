@@ -12,10 +12,10 @@ export interface BlogPostRaw {
   tags: string[];
 }
 
-export interface BlogPost extends Omit<BlogPostRaw, 'title' | 'excerpt'> {
+export interface BlogPost extends Omit<BlogPostRaw, "title" | "excerpt"> {
   title: string;
   excerpt: string;
   content?: string;
 }
 
-export interface BlogMeta extends Omit<BlogPost, 'content'> {} 
+export interface BlogMeta extends Omit<BlogPost, "content"> {}

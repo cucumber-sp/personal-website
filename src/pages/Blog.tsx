@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { BlogMeta } from '../types/blog';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { BlogMeta } from "../types/blog";
+import { useTranslation } from "react-i18next";
 
 const BlogContainer = styled.div`
   max-width: 800px;
@@ -27,13 +27,17 @@ const BlogCard = styled(motion.article)`
   border: 1px solid var(--card-border);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -5px;
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background-image: radial-gradient(circle, var(--accent) 0.5px, transparent 0.5px);
+    background-image: radial-gradient(
+      circle,
+      var(--accent) 0.5px,
+      transparent 0.5px
+    );
     background-size: 4px 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -68,7 +72,7 @@ const Meta = styled.div`
 `;
 
 const DateText = styled.span`
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--accent);
   font-size: 0.9rem;
 `;
@@ -96,7 +100,7 @@ const Excerpt = styled.p`
 `;
 
 const PageTitle = styled(motion.h1)`
-  font-family: 'DotMatrix', monospace;
+  font-family: "DotMatrix", monospace;
   font-size: 2.5rem;
   margin-bottom: 2rem;
   text-align: center;
@@ -110,10 +114,10 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/blog/posts/index.json');
-        if (!response.ok) throw new Error('Failed to fetch posts');
+        const response = await fetch("/blog/posts/index.json");
+        if (!response.ok) throw new Error("Failed to fetch posts");
         const data = await response.json();
-        
+
         // Transform posts to include current language content
         const transformedPosts = data.posts.map((post: any) => ({
           id: post.id,
@@ -121,12 +125,12 @@ const Blog: React.FC = () => {
           date: post.date,
           slug: post.slug,
           excerpt: post.excerpt[i18n.language],
-          tags: post.tags
+          tags: post.tags,
         }));
-        
+
         setPosts(transformedPosts);
       } catch (error) {
-        console.error('Error fetching blog posts:', error);
+        console.error("Error fetching blog posts:", error);
       }
     };
 
@@ -144,22 +148,22 @@ const Blog: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        {t('blog.title')}
+        {t("blog.title")}
       </PageTitle>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         style={{
-          textAlign: 'center',
-          marginBottom: '2rem',
-          color: 'var(--text)',
-          maxWidth: '600px',
-          margin: '0 auto 2rem auto',
-          lineHeight: '1.6'
+          textAlign: "center",
+          marginBottom: "2rem",
+          color: "var(--text)",
+          maxWidth: "600px",
+          margin: "0 auto 2rem auto",
+          lineHeight: "1.6",
         }}
       >
-        {t('blog.description')}
+        {t("blog.description")}
       </motion.p>
       <BlogGrid>
         {posts.map((post, index) => (
@@ -175,11 +179,14 @@ const Blog: React.FC = () => {
             <Title>{post.title}</Title>
             <Meta>
               <DateText>
-                {new Date(post.date).toLocaleDateString(i18n.language === 'ru' ? 'ru-RU' : 'en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+                {new Date(post.date).toLocaleDateString(
+                  i18n.language === "ru" ? "ru-RU" : "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  },
+                )}
               </DateText>
             </Meta>
             <Excerpt>{post.excerpt}</Excerpt>
@@ -195,4 +202,4 @@ const Blog: React.FC = () => {
   );
 };
 
-export default Blog; 
+export default Blog;

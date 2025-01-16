@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { BlogPost as BlogPostType } from "../types/blog";
 import { FaArrowLeft } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+// Lazy load the syntax highlighter
+const SyntaxHighlighter = lazy(() =>
+  import("react-syntax-highlighter").then((module) => ({
+    default: module.Prism,
+  })),
+);
 
 const PostContainer = styled.div`
   padding: 4rem 0;
@@ -200,24 +206,16 @@ const Content = styled.div`
 `;
 
 const CodeBlock = styled.div`
-  position: relative;
   margin: 2rem 0;
-
-  pre {
-    margin: 0 !important;
-    border-radius: 8px;
-    padding-top: 3rem !important;
-  }
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1e1e1e;
 `;
 
 const CodeHeader = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2.5rem;
+  height: 3rem;
   background: #1e1e1e;
-  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #333;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -227,10 +225,43 @@ const CodeHeader = styled.div`
   color: #d4d4d4;
 `;
 
+const CodeContent = styled.div`
+  pre {
+    margin: 0 !important;
+    padding: 1rem !important;
+  }
+
+  code {
+    padding-left: 0 !important;
+  }
+
+  .react-syntax-highlighter-line-number {
+    margin-right: 1em !important;
+    padding: 0 1em 0 0 !important;
+    text-align: right !important;
+    color: #858585 !important;
+    min-width: 3em !important;
+    display: inline-block !important;
+  }
+`;
+
+const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
 const Language = styled.span`
   text-transform: uppercase;
   font-size: 0.8rem;
   color: #858585;
+`;
+
+const LineCount = styled.span`
+  font-size: 0.8rem;
+  color: #858585;
+  padding-left: 1rem;
+  border-left: 1px solid #333;
 `;
 
 const CopyButton = styled.button`
@@ -266,10 +297,14 @@ const BlogPost: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchPost = async () => {
       try {
         // Fetch post metadata
-        const response = await fetch(`/blog/posts/${slug}/index.json`);
+        const response = await fetch(`/blog/posts/${slug}/index.json`, {
+          signal: controller.signal,
+        });
         if (!response.ok) {
           throw new Error("Post not found");
         }
@@ -278,6 +313,7 @@ const BlogPost: React.FC = () => {
         // Fetch post content based on current language
         const contentResponse = await fetch(
           `/blog/posts/${slug}/${i18n.language}.md`,
+          { signal: controller.signal },
         );
         if (!contentResponse.ok) {
           throw new Error("Post content not found");
@@ -290,9 +326,11 @@ const BlogPost: React.FC = () => {
           excerpt: meta.excerpt[i18n.language],
           content: content,
         });
-      } catch (error) {
-        console.error("Error fetching blog post:", error);
-        setPost(null);
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name !== "AbortError") {
+          console.error("Error fetching blog post:", error);
+          setPost(null);
+        }
       } finally {
         setLoading(false);
       }
@@ -302,6 +340,8 @@ const BlogPost: React.FC = () => {
       setLoading(true);
       fetchPost();
     }
+
+    return () => controller.abort();
   }, [slug, i18n.language]);
 
   const handleBack = () => {
@@ -318,23 +358,49 @@ const BlogPost: React.FC = () => {
     code({ inline, className, children, ...props }: any) {
       const match = /language-(\w+)/.exec(className || "");
       const code = String(children).replace(/\n$/, "");
+      const lineCount = code.split("\n").length;
 
       return !inline && match ? (
         <CodeBlock>
           <CodeHeader>
-            <Language>{match[1]}</Language>
+            <HeaderLeft>
+              <Language>{match[1]}</Language>
+              <LineCount>{lineCount} lines</LineCount>
+            </HeaderLeft>
             <CopyButton onClick={() => handleCopy(code)} title="Copy code">
               {copiedCode === code ? "Copied!" : "Copy"}
             </CopyButton>
           </CodeHeader>
-          <SyntaxHighlighter
-            style={vscDarkPlus}
-            language={match[1]}
-            PreTag="div"
-            {...props}
-          >
-            {code}
-          </SyntaxHighlighter>
+          <CodeContent>
+            <Suspense
+              fallback={
+                <div style={{ padding: "1rem", background: "#1e1e1e" }}>
+                  {code}
+                </div>
+              }
+            >
+              <SyntaxHighlighter
+                style={vscDarkPlus}
+                language={match[1]}
+                PreTag="div"
+                showLineNumbers={true}
+                lineNumberStyle={{
+                  minWidth: "3em",
+                  paddingRight: "1em",
+                  textAlign: "right",
+                  userSelect: "none",
+                  marginRight: "1em",
+                }}
+                customStyle={{
+                  padding: "1rem",
+                  margin: 0,
+                }}
+                {...props}
+              >
+                {code}
+              </SyntaxHighlighter>
+            </Suspense>
+          </CodeContent>
         </CodeBlock>
       ) : (
         <code className={className} {...props}>

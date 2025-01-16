@@ -1,19 +1,19 @@
-import React from 'react';
-import { Routes, Route, useLocation, BrowserRouter } from 'react-router-dom';
-import styled, { createGlobalStyle } from 'styled-components';
-import { AnimatePresence } from 'framer-motion';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Experience from './pages/Experience';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
-import Navigation from './components/Navigation';
-import MouseFollower from './components/MouseFollower';
-import { ThemeProvider } from './context/ThemeContext';
-import './i18n';
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
+import styled, { createGlobalStyle } from "styled-components";
+import { AnimatePresence } from "framer-motion";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Experience from "./pages/Experience";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import Navigation from "./components/Navigation";
+import MouseFollower from "./components/MouseFollower";
+import { ThemeProvider } from "./context/ThemeContext";
+import "./i18n";
+import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -157,13 +157,17 @@ const SocialLinks = styled.div`
     position: relative;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: -5px;
       left: -5px;
       right: -5px;
       bottom: -5px;
-      background-image: radial-gradient(circle, var(--accent) 0.5px, transparent 0.5px);
+      background-image: radial-gradient(
+        circle,
+        var(--accent) 0.5px,
+        transparent 0.5px
+      );
       background-size: 4px 4px;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -206,20 +210,35 @@ const AppWithRouter: React.FC = () => {
         <Footer>
           <FooterContent>
             <FooterLeft>
-              <h3>{t('footer.title')}</h3>
-              <p>{t('footer.subtitle')}</p>
+              <h3>{t("footer.title")}</h3>
+              <p>{t("footer.subtitle")}</p>
             </FooterLeft>
             <SocialLinks>
-              <a href="mailto:your.email@example.com" title={t('footer.email')}>
+              <a href="mailto:your.email@example.com" title={t("footer.email")}>
                 <FaEnvelope />
               </a>
-              <a href="https://github.com/cucumber-sp" target="_blank" rel="noopener noreferrer" title={t('footer.github')}>
+              <a
+                href="https://github.com/cucumber-sp"
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t("footer.github")}
+              >
                 <FaGithub />
               </a>
-              <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" title={t('footer.linkedin')}>
+              <a
+                href="https://linkedin.com/in/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t("footer.linkedin")}
+              >
                 <FaLinkedin />
               </a>
-              <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" title={t('footer.twitter')}>
+              <a
+                href="https://twitter.com/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t("footer.twitter")}
+              >
                 <FaTwitter />
               </a>
             </SocialLinks>

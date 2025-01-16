@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, memo, lazy, Suspense } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import ThemeSwitch from "./ThemeSwitch";
-import { FaHome } from "react-icons/fa";
+
+// Lazy load icons
+const FaHome = lazy(() =>
+  import("react-icons/fa").then((mod) => ({ default: mod.FaHome })),
+);
 
 const Nav = styled.nav`
   position: fixed;
@@ -326,6 +330,64 @@ const LangButton = styled(MobileLangButton)`
   }
 `;
 
+const IconWrapper = memo(({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div style={{ width: "1.2rem", height: "1.2rem" }} />}>
+    {children}
+  </Suspense>
+));
+
+const NavLinks = memo(
+  ({
+    items,
+    isActive,
+    closeMenu,
+  }: {
+    items: Array<{ path: string; label: string; delay: number }>;
+    isActive: (path: string) => boolean;
+    closeMenu: () => void;
+  }) => (
+    <>
+      {items.map(({ path, label, delay }) => (
+        <NavItem
+          key={path}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, delay: delay }}
+        >
+          <NavLink to={path} onClick={closeMenu} $active={isActive(path)}>
+            {label}
+          </NavLink>
+        </NavItem>
+      ))}
+    </>
+  ),
+);
+
+const LanguageSwitchButtons = memo(
+  ({
+    currentLang,
+    onLanguageChange,
+  }: {
+    currentLang: string;
+    onLanguageChange: (lng: string) => void;
+  }) => (
+    <>
+      <LangButton
+        $active={currentLang === "en"}
+        onClick={() => onLanguageChange("en")}
+      >
+        EN
+      </LangButton>
+      <LangButton
+        $active={currentLang === "ru"}
+        onClick={() => onLanguageChange("ru")}
+      >
+        RU
+      </LangButton>
+    </>
+  ),
+);
+
 const Navigation: React.FC = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -343,6 +405,7 @@ const Navigation: React.FC = () => {
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
+    localStorage.setItem("i18nextLng", lng);
   };
 
   const navItems = [
@@ -353,11 +416,11 @@ const Navigation: React.FC = () => {
     { path: "/blog", label: t("nav.blog"), delay: 0.6 },
   ];
 
-  const isActive = (path: string) => {
-    if (path === "/") {
-      return location.pathname === path;
+  const isActive = (_path: string) => {
+    if (_path === "/") {
+      return location.pathname === _path;
     }
-    return location.pathname.startsWith(path);
+    return location.pathname.startsWith(_path);
   };
 
   const showHomeButton = !isOpen && location.pathname !== "/";
@@ -366,41 +429,28 @@ const Navigation: React.FC = () => {
     <Nav>
       <NavContainer>
         <NavList>
-          {navItems.map((item) => (
-            <NavItem
-              key={item.path}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <NavLink to={item.path} $active={isActive(item.path)}>
-                {item.label}
-              </NavLink>
-            </NavItem>
-          ))}
+          <NavLinks
+            items={navItems}
+            isActive={isActive}
+            closeMenu={closeMenu}
+          />
         </NavList>
 
         <DesktopControls>
           <DesktopLanguageSwitch>
-            <LangButton
-              $active={i18n.language === "en"}
-              onClick={() => changeLanguage("en")}
-            >
-              EN
-            </LangButton>
-            <LangButton
-              $active={i18n.language === "ru"}
-              onClick={() => changeLanguage("ru")}
-            >
-              RU
-            </LangButton>
+            <LanguageSwitchButtons
+              currentLang={i18n.language}
+              onLanguageChange={changeLanguage}
+            />
           </DesktopLanguageSwitch>
           <ThemeSwitch />
         </DesktopControls>
       </NavContainer>
 
       <HomeButton to="/" $show={showHomeButton}>
-        <FaHome />
+        <IconWrapper>
+          <FaHome />
+        </IconWrapper>
       </HomeButton>
 
       <HamburgerButton
@@ -422,37 +472,18 @@ const Navigation: React.FC = () => {
             transition={{ type: "tween", duration: 0.3 }}
           >
             <MobileNavList>
-              {navItems.map((item) => (
-                <NavItem
-                  key={item.path}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: item.delay }}
-                >
-                  <NavLink
-                    to={item.path}
-                    onClick={closeMenu}
-                    $active={isActive(item.path)}
-                  >
-                    {item.label}
-                  </NavLink>
-                </NavItem>
-              ))}
+              <NavLinks
+                items={navItems}
+                isActive={isActive}
+                closeMenu={closeMenu}
+              />
             </MobileNavList>
             <MobileControls>
               <MobileLanguageSwitch>
-                <MobileLangButton
-                  $active={i18n.language === "en"}
-                  onClick={() => changeLanguage("en")}
-                >
-                  EN
-                </MobileLangButton>
-                <MobileLangButton
-                  $active={i18n.language === "ru"}
-                  onClick={() => changeLanguage("ru")}
-                >
-                  RU
-                </MobileLangButton>
+                <LanguageSwitchButtons
+                  currentLang={i18n.language}
+                  onLanguageChange={changeLanguage}
+                />
               </MobileLanguageSwitch>
               <ThemeSwitch isMobile />
             </MobileControls>
@@ -463,4 +494,4 @@ const Navigation: React.FC = () => {
   );
 };
 
-export default Navigation;
+export default memo(Navigation);

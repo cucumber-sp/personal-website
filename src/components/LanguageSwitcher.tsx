@@ -1,94 +1,117 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import React, { memo, useCallback, useEffect } from "react";
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
-const SwitcherContainer = styled.div`
-  position: fixed;
-  top: 2rem;
-  right: 2rem;
-  z-index: 1000;
+const Container = styled.div`
   display: flex;
-  gap: 0.5rem;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+  justify-content: center;
+  position: relative;
+  background: var(--card-background);
+  border-radius: 8px;
+  padding: 0.3rem;
+  height: 35px;
+  width: fit-content;
+  margin: 0;
+  border: 1px solid var(--accent);
+  overflow: hidden;
 `;
 
-const LanguageButton = styled(motion.button)<{ $active: boolean }>`
-  background: ${props => props.$active ? 'var(--accent)' : 'rgba(255, 255, 255, 0.9)'};
-  color: ${props => props.$active ? 'white' : 'var(--primary)'};
+const Button = styled.button<{ $active: boolean }>`
+  height: 100%;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 45px;
+  background: transparent;
+  color: ${(props) => (props.$active ? "white" : "var(--primary)")};
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
   font-family: var(--font-matrix);
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  border-radius: 4px;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    right: 0;
+    bottom: 0;
+    background: var(--accent);
+    opacity: ${(props) => (props.$active ? 1 : 0)};
+    transition: opacity 0.2s ease;
     z-index: -1;
+    border-radius: 4px;
   }
 
   &:hover {
-    transform: translateY(-2px);
-    color: ${props => props.$active ? 'white' : 'var(--accent)'};
-
-    &::before {
-      opacity: ${props => props.$active ? 0 : 0.1};
-    }
+    color: ${(props) => (props.$active ? "white" : "var(--accent)")};
   }
 `;
+
+interface LanguageButtonProps {
+  lang: string;
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+const LanguageButton = memo(
+  ({ lang, active, onClick, children }: LanguageButtonProps) => (
+    <Button
+      onClick={onClick}
+      $active={active}
+      aria-label={`Switch to ${lang} language`}
+    >
+      {children}
+    </Button>
+  ),
+);
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
 
-  useEffect(() => {
-    // Get saved language from localStorage or use browser language
-    const savedLang = localStorage.getItem('language');
-    const browserLang = navigator.language.startsWith('ru') ? 'ru' : 'en';
-    const initialLang = savedLang || browserLang;
-    
-    i18n.changeLanguage(initialLang);
-  }, [i18n]);
+  const setLanguage = useCallback(
+    (lang: string) => {
+      localStorage.setItem("i18nextLng", lang);
+      i18n.changeLanguage(lang);
+    },
+    [i18n],
+  );
 
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-    localStorage.setItem('language', lng);
-  };
+  useEffect(() => {
+    const savedLang = localStorage.getItem("i18nextLng");
+    const browserLang = navigator.language.split("-")[0];
+    const defaultLang = savedLang || browserLang || "en";
+
+    if (!savedLang) {
+      setLanguage(defaultLang);
+    }
+  }, [setLanguage]);
 
   return (
-    <SwitcherContainer>
+    <Container>
       <LanguageButton
-        $active={i18n.language === 'en'}
-        onClick={() => changeLanguage('en')}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        lang="en"
+        active={i18n.language === "en"}
+        onClick={() => setLanguage("en")}
       >
         EN
       </LanguageButton>
       <LanguageButton
-        $active={i18n.language === 'ru'}
-        onClick={() => changeLanguage('ru')}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        lang="ru"
+        active={i18n.language === "ru"}
+        onClick={() => setLanguage("ru")}
       >
         RU
       </LanguageButton>
-    </SwitcherContainer>
+    </Container>
   );
 };
 
-export default LanguageSwitcher; 
+export default memo(LanguageSwitcher);

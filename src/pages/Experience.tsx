@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const ExperienceContainer = styled.div`
   max-width: 1000px;
@@ -22,7 +22,7 @@ const Timeline = styled.div`
   margin: 0 auto;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -66,7 +66,7 @@ const TimelineDot = styled.div`
   z-index: 2;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 8px;
     height: 8px;
@@ -82,14 +82,14 @@ const TimelineDot = styled.div`
   }
 `;
 
-const TimelineContent = styled(motion.div)<{ $align?: 'left' | 'right' }>`
+const TimelineContent = styled(motion.div)<{ $align?: "left" | "right" }>`
   width: 42%;
   padding: 1.5rem;
   background: var(--card-background);
   border-radius: 8px;
   border: 1px solid var(--card-border);
   position: relative;
-  margin-${props => props.$align === 'right' ? 'left' : 'right'}: 58%;
+  margin-${(props) => (props.$align === "right" ? "left" : "right")}: 58%;
 
   &::before {
     content: '';
@@ -176,16 +176,14 @@ const Experience: React.FC = () => {
   const experiences = [
     {
       company: "Tech Solutions Inc",
-      period: "2022 - " + t('experience.present'),
+      period: "2022 - " + t("experience.present"),
       role: "Senior Full Stack Developer",
       responsibilities: [
         "Led development of microservices architecture",
         "Mentored junior developers",
-        "Implemented CI/CD pipelines"
+        "Implemented CI/CD pipelines",
       ],
-      technologies: [
-        "React", "Node.js", "TypeScript", "Docker", "AWS"
-      ]
+      technologies: ["React", "Node.js", "TypeScript", "Docker", "AWS"],
     },
     {
       company: "Digital Innovations Ltd",
@@ -194,12 +192,10 @@ const Experience: React.FC = () => {
       responsibilities: [
         "Developed scalable web applications",
         "Optimized database performance",
-        "Integrated third-party APIs"
+        "Integrated third-party APIs",
       ],
-      technologies: [
-        "Vue.js", "Python", "PostgreSQL", "Redis", "GCP"
-      ]
-    }
+      technologies: ["Vue.js", "Python", "PostgreSQL", "Redis", "GCP"],
+    },
   ];
 
   return (
@@ -209,7 +205,7 @@ const Experience: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        {t('experience.title')}
+        {t("experience.title")}
       </Title>
       <Timeline>
         {experiences.map((exp, index) => (
@@ -221,7 +217,7 @@ const Experience: React.FC = () => {
           >
             <TimelineDot />
             <TimelineContent
-              $align={index % 2 === 0 ? 'left' : 'right'}
+              $align={index % 2 === 0 ? "left" : "right"}
               whileHover={{ y: -5 }}
               transition={{ duration: 0.2 }}
             >
@@ -229,7 +225,7 @@ const Experience: React.FC = () => {
               <Period>{exp.period}</Period>
               <Role>{exp.role}</Role>
               <Description>
-                <h5>{t('experience.responsibilities')}:</h5>
+                <h5>{t("experience.responsibilities")}:</h5>
                 <ul>
                   {exp.responsibilities.map((resp, i) => (
                     <li key={i}>{resp}</li>
@@ -237,7 +233,7 @@ const Experience: React.FC = () => {
                 </ul>
               </Description>
               <Description>
-                <h5>{t('experience.technologies')}:</h5>
+                <h5>{t("experience.technologies")}:</h5>
                 <ul>
                   {exp.technologies.map((tech, i) => (
                     <li key={i}>{tech}</li>
@@ -252,4 +248,4 @@ const Experience: React.FC = () => {
   );
 };
 
-export default Experience; 
+export default Experience;

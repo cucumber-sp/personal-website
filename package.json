@@ -45,7 +45,10 @@
     "vite": "^6.0.7"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint --fix",
-    "*.{ts,tsx,css,md,html,json}": "prettier --write"
+    "*.{ts,tsx}": [
+      "eslint --fix --config eslint.config.js",
+      "prettier --write"
+    ],
+    "*.{css,md,html,json}": "prettier --write"
   }
 }

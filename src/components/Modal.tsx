@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { FaTimes, FaTerminal } from 'react-icons/fa';
+import React, { useRef } from "react";
+import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { FaTimes, FaTerminal } from "react-icons/fa";
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -199,22 +199,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
   React.useEffect(() => {
     if (isOpen) {
       scrollPositionRef.current = window.pageYOffset;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
       document.body.style.top = `-${scrollPositionRef.current}px`;
-      document.body.style.width = '100%';
+      document.body.style.width = "100%";
     } else {
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('position');
-      document.body.style.removeProperty('top');
-      document.body.style.removeProperty('width');
+      document.body.style.removeProperty("overflow");
+      document.body.style.removeProperty("position");
+      document.body.style.removeProperty("top");
+      document.body.style.removeProperty("width");
       window.scrollTo(0, scrollPositionRef.current);
     }
     return () => {
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('position');
-      document.body.style.removeProperty('top');
-      document.body.style.removeProperty('width');
+      document.body.style.removeProperty("overflow");
+      document.body.style.removeProperty("position");
+      document.body.style.removeProperty("top");
+      document.body.style.removeProperty("width");
       if (scrollPositionRef.current) {
         window.scrollTo(0, scrollPositionRef.current);
       }
@@ -226,12 +226,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
 
     return {
       title: content.title,
-      sections: content.sections.map(section => ({
+      sections: content.sections.map((section) => ({
         ...section,
         title: section.title,
         content: section.content,
-        note: section.note
-      }))
+        note: section.note,
+      })),
     };
   }, [content]);
 
@@ -245,20 +245,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
           onClick={onClose}
         >
           <ModalContainer
-            initial={{ 
+            initial={{
               opacity: 0,
               scale: window.innerWidth > 768 ? 0.9 : 1,
-              y: window.innerWidth > 768 ? 0 : 20
+              y: window.innerWidth > 768 ? 0 : 20,
             }}
-            animate={{ 
+            animate={{
               opacity: 1,
               scale: 1,
-              y: 0
+              y: 0,
             }}
-            exit={{ 
+            exit={{
               opacity: 0,
               scale: window.innerWidth > 768 ? 0.9 : 1,
-              y: window.innerWidth > 768 ? 0 : 20
+              y: window.innerWidth > 768 ? 0 : 20,
             }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
@@ -269,7 +269,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
               </CloseButton>
             </CloseButtonContainer>
             <ModalContent>
-              <Title>{String(t(modalContent.title, { defaultValue: modalContent.title }))}</Title>
+              <Title>
+                {String(
+                  t(modalContent.title, { defaultValue: modalContent.title }),
+                )}
+              </Title>
               {modalContent.sections.map((section, index) => (
                 <Section key={index}>
                   <SectionTitle>
@@ -277,14 +281,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
                     {String(t(section.title, { defaultValue: section.title }))}
                   </SectionTitle>
                   <CommandBlock>
-                    <Command dangerouslySetInnerHTML={{ 
-                      __html: section.content
-                    }} />
+                    <Command
+                      dangerouslySetInnerHTML={{
+                        __html: section.content,
+                      }}
+                    />
                   </CommandBlock>
                   {section.note && (
-                    <Note dangerouslySetInnerHTML={{ 
-                      __html: String(t(section.note, { defaultValue: section.note }))
-                    }} />
+                    <Note
+                      dangerouslySetInnerHTML={{
+                        __html: String(
+                          t(section.note, { defaultValue: section.note }),
+                        ),
+                      }}
+                    />
                   )}
                 </Section>
               ))}
@@ -296,4 +306,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
   );
 };
 
-export default Modal; 
+export default Modal;

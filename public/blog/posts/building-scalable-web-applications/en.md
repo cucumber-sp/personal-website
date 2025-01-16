@@ -60,4 +60,4 @@ const UserProfile: React.FC<UserProps> = ({ name, email, role }) => {
 
 ## Conclusion
 
-Building scalable applications requires careful planning and the right tools. TypeScript and React provide a solid foundation for creating maintainable and reliable web applications. 
+Building scalable applications requires careful planning and the right tools. TypeScript and React provide a solid foundation for creating maintainable and reliable web applications.

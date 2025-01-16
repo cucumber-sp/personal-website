@@ -1,10 +1,10 @@
-import en from './locales/en.json';
+import en from "./locales/en.json";
 
 export type TranslationKeys = typeof en;
 
-declare module 'i18next' {
+declare module "i18next" {
   interface CustomTypeOptions {
-    defaultNS: 'en';
+    defaultNS: "en";
     resources: {
       en: typeof en;
       ru: typeof en;
@@ -18,4 +18,4 @@ export type NestedKeyOf<ObjectType extends object> = {
     : `${Key}`;
 }[keyof ObjectType & (string | number)];
 
-export type TranslationKey = NestedKeyOf<TranslationKeys>; 
+export type TranslationKey = NestedKeyOf<TranslationKeys>;

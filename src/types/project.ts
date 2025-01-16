@@ -1,5 +1,5 @@
 interface ProjectAction {
-  type: 'link' | 'modal';
+  type: "link" | "modal";
   icon: string;
   translationKey: string;
   url?: string;
@@ -27,4 +27,4 @@ export interface Project {
 
 export interface ProjectWithMeta extends Project {
   isLoading: boolean;
-} 
+}

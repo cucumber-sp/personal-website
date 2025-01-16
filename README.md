@@ -21,12 +21,14 @@ A modern, responsive personal portfolio website built with React, TypeScript, an
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/personal-website.git
 cd personal-website
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -34,6 +36,7 @@ yarn
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 # or
@@ -90,4 +93,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Inspired by Nothing's dot-matrix design aesthetic
 - Built with React and modern web technologies
-- Animations powered by Framer Motion 
+- Animations powered by Framer Motion

@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const AboutContainer = styled.div`
   max-width: 800px;
@@ -41,13 +41,17 @@ const SkillCard = styled(motion.div)`
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -5px;
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background-image: radial-gradient(circle, var(--accent) 0.5px, transparent 0.5px);
+    background-image: radial-gradient(
+      circle,
+      var(--accent) 0.5px,
+      transparent 0.5px
+    );
     background-size: 4px 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -83,10 +87,16 @@ const About: React.FC = () => {
   const { t } = useTranslation();
 
   const skills = {
-    frontend: ['React', 'TypeScript', 'Next.js', 'Styled Components', 'Framer Motion'],
-    backend: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'GraphQL'],
-    devops: ['Docker', 'AWS', 'CI/CD', 'Kubernetes', 'Terraform'],
-    tools: ['Git', 'VS Code', 'Figma', 'Postman', 'Jest']
+    frontend: [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "Styled Components",
+      "Framer Motion",
+    ],
+    backend: ["Node.js", "Express", "PostgreSQL", "MongoDB", "GraphQL"],
+    devops: ["Docker", "AWS", "CI/CD", "Kubernetes", "Terraform"],
+    tools: ["Git", "VS Code", "Figma", "Postman", "Jest"],
   };
 
   return (
@@ -96,7 +106,7 @@ const About: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        {t('about.title')}
+        {t("about.title")}
       </Title>
 
       <Section
@@ -104,7 +114,7 @@ const About: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <p>{t('about.intro')}</p>
+        <p>{t("about.intro")}</p>
       </Section>
 
       <Section
@@ -112,10 +122,10 @@ const About: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
-        <SectionTitle>{t('about.skills.title')}</SectionTitle>
+        <SectionTitle>{t("about.skills.title")}</SectionTitle>
         <SkillsGrid>
           <SkillCard whileHover={{ y: -5 }}>
-            <SkillTitle>{t('about.skills.frontend')}</SkillTitle>
+            <SkillTitle>{t("about.skills.frontend")}</SkillTitle>
             <SkillList>
               {skills.frontend.map((skill, index) => (
                 <li key={index}>{skill}</li>
@@ -124,7 +134,7 @@ const About: React.FC = () => {
           </SkillCard>
 
           <SkillCard whileHover={{ y: -5 }}>
-            <SkillTitle>{t('about.skills.backend')}</SkillTitle>
+            <SkillTitle>{t("about.skills.backend")}</SkillTitle>
             <SkillList>
               {skills.backend.map((skill, index) => (
                 <li key={index}>{skill}</li>
@@ -133,7 +143,7 @@ const About: React.FC = () => {
           </SkillCard>
 
           <SkillCard whileHover={{ y: -5 }}>
-            <SkillTitle>{t('about.skills.devops')}</SkillTitle>
+            <SkillTitle>{t("about.skills.devops")}</SkillTitle>
             <SkillList>
               {skills.devops.map((skill, index) => (
                 <li key={index}>{skill}</li>
@@ -142,7 +152,7 @@ const About: React.FC = () => {
           </SkillCard>
 
           <SkillCard whileHover={{ y: -5 }}>
-            <SkillTitle>{t('about.skills.tools')}</SkillTitle>
+            <SkillTitle>{t("about.skills.tools")}</SkillTitle>
             <SkillList>
               {skills.tools.map((skill, index) => (
                 <li key={index}>{skill}</li>
@@ -155,4 +165,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;

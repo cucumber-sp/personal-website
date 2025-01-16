@@ -1,16 +1,30 @@
-import React from "react";
+import React, { memo, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import {
-  FaGithub,
-  FaEnvelope,
-  FaHistory,
-  FaCode,
-  FaTools,
-  FaTelegram,
-} from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+
+// Lazy load icons
+const Icons = {
+  FaGithub: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaGithub })),
+  ),
+  FaEnvelope: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaEnvelope })),
+  ),
+  FaHistory: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaHistory })),
+  ),
+  FaCode: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaCode })),
+  ),
+  FaTools: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaTools })),
+  ),
+  FaTelegram: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaTelegram })),
+  ),
+};
 
 const HomeContainer = styled.div`
   min-height: calc(100vh - 200px);
@@ -271,6 +285,70 @@ const ContactButton = styled(motion.a)`
   }
 `;
 
+const IconWrapper = memo(({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div style={{ width: "1.5rem", height: "1.5rem" }} />}>
+    {children}
+  </Suspense>
+));
+
+const StatButtonContent = memo(
+  ({
+    icon: Icon,
+    title,
+    subtitle,
+  }: {
+    icon: any;
+    title: string;
+    subtitle: string;
+  }) => (
+    <>
+      <div className="icon">
+        <IconWrapper>
+          <Icon />
+        </IconWrapper>
+      </div>
+      <div className="content">
+        <h3>{title}</h3>
+        <p>{subtitle}</p>
+      </div>
+      <div className="mobile-arrow">→</div>
+    </>
+  ),
+);
+
+const ContactButtonContent = memo(
+  ({ icon: Icon, children }: { icon: any; children: React.ReactNode }) => (
+    <>
+      <IconWrapper>
+        <Icon />
+      </IconWrapper>
+      {children}
+    </>
+  ),
+);
+
+const ProfileImage = memo(() => (
+  <PhotoCard
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.6 }}
+  >
+    <PhotoContainer
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+    >
+      <img
+        src="/images/profile.jpg"
+        alt="Andrey Onischenko"
+        loading="eager"
+        width="180"
+        height="180"
+      />
+    </PhotoContainer>
+  </PhotoCard>
+));
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -278,19 +356,7 @@ const Home: React.FC = () => {
   return (
     <HomeContainer>
       <MainSection>
-        <PhotoCard
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <PhotoContainer
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <img src="/images/profile.jpg" alt="Andrey Onischenko" />
-          </PhotoContainer>
-        </PhotoCard>
+        <ProfileImage />
         <ChatSection>
           <FirstMessage
             initial={{ opacity: 0, x: -20 }}
@@ -313,42 +379,33 @@ const Home: React.FC = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="icon">
-                  <FaHistory />
-                </div>
-                <div className="content">
-                  <h3>{t("home.stats.experience.value")}</h3>
-                  <p>{t("home.stats.experience.label")}</p>
-                </div>
-                <div className="mobile-arrow">→</div>
+                <StatButtonContent
+                  icon={Icons.FaHistory}
+                  title={t("home.stats.experience.value")}
+                  subtitle={t("home.stats.experience.label")}
+                />
               </StatButton>
               <StatButton
                 onClick={() => navigate("/projects")}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="icon">
-                  <FaCode />
-                </div>
-                <div className="content">
-                  <h3>{t("home.stats.projects.value")}</h3>
-                  <p>{t("home.stats.projects.label")}</p>
-                </div>
-                <div className="mobile-arrow">→</div>
+                <StatButtonContent
+                  icon={Icons.FaCode}
+                  title={t("home.stats.projects.value")}
+                  subtitle={t("home.stats.projects.label")}
+                />
               </StatButton>
               <StatButton
                 onClick={() => navigate("/about")}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <div className="icon">
-                  <FaTools />
-                </div>
-                <div className="content">
-                  <h3>{t("home.stats.opensource.value")}</h3>
-                  <p>{t("home.stats.opensource.label")}</p>
-                </div>
-                <div className="mobile-arrow">→</div>
+                <StatButtonContent
+                  icon={Icons.FaTools}
+                  title={t("home.stats.opensource.value")}
+                  subtitle={t("home.stats.opensource.label")}
+                />
               </StatButton>
             </StatsContainer>
           </MessageBubble>
@@ -367,16 +424,18 @@ const Home: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaGithub />
-                {t("home.contact.github")}
+                <ContactButtonContent icon={Icons.FaGithub}>
+                  {t("home.contact.github")}
+                </ContactButtonContent>
               </ContactButton>
               <ContactButton
                 href="mailto:your.email@example.com"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaEnvelope />
-                {t("home.contact.email")}
+                <ContactButtonContent icon={Icons.FaEnvelope}>
+                  {t("home.contact.email")}
+                </ContactButtonContent>
               </ContactButton>
               <ContactButton
                 href="https://t.me/a_dzeta"
@@ -385,8 +444,9 @@ const Home: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaTelegram />
-                {t("home.contact.telegram")}
+                <ContactButtonContent icon={Icons.FaTelegram}>
+                  {t("home.contact.telegram")}
+                </ContactButtonContent>
               </ContactButton>
             </ContactSection>
           </MessageBubble>
@@ -417,4 +477,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default memo(Home);

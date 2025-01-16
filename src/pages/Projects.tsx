@@ -1,11 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { FaGithub, FaExternalLinkAlt, FaStar, FaDownload } from 'react-icons/fa';
-import { Project, ProjectWithMeta } from '../types/project';
-import projectsData from '../data/projects.json';
-import Modal from '../components/Modal';
+import React, { useEffect, useState, lazy, Suspense } from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { Project, ProjectWithMeta } from "../types/project";
+import projectsData from "../data/projects.json";
+import Modal from "../components/Modal";
+
+// Lazy load icons
+const Icons = {
+  FaGithub: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaGithub })),
+  ),
+  FaExternalLinkAlt: lazy(() =>
+    import("react-icons/fa").then((mod) => ({
+      default: mod.FaExternalLinkAlt,
+    })),
+  ),
+  FaDownload: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaDownload })),
+  ),
+  FaStar: lazy(() =>
+    import("react-icons/fa").then((mod) => ({ default: mod.FaStar })),
+  ),
+};
 
 const Container = styled.div`
   max-width: 1200px;
@@ -190,9 +207,15 @@ const StarsCount = styled.span`
   }
 
   svg {
-    color: #FFD700;
+    color: #ffd700;
   }
 `;
+
+const IconWrapper = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div style={{ width: "1rem", height: "1rem" }} />}>
+    {children}
+  </Suspense>
+);
 
 const Projects: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -209,29 +232,31 @@ const Projects: React.FC = () => {
           }
 
           try {
-            const repoPath = project.github.replace('https://github.com/', '');
-            const response = await fetch(`https://api.github.com/repos/${repoPath}`);
+            const repoPath = project.github.replace("https://github.com/", "");
+            const response = await fetch(
+              `https://api.github.com/repos/${repoPath}`,
+            );
             const data = await response.json();
             return {
               ...project,
               stars: data.stargazers_count,
-              isLoading: false
+              isLoading: false,
             };
           } catch (error) {
-            console.error('Error fetching stars:', error);
+            console.error("Error fetching stars:", error);
             return { ...project, isLoading: false };
           }
-        })
+        }),
       );
 
       setProjects(updatedProjects);
     };
 
-    const initialProjects = projectsData.projects.map(project => {
+    const initialProjects = projectsData.projects.map((project) => {
       const translatedProject = {
         ...project,
         title: t(`projects.items.${project.id}.title`, project.id),
-        description: t(`projects.items.${project.id}.description`, project.id)
+        description: t(`projects.items.${project.id}.description`, project.id),
       } as Project;
       return { ...translatedProject, isLoading: true } as ProjectWithMeta;
     });
@@ -242,12 +267,24 @@ const Projects: React.FC = () => {
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
-      case 'github':
-        return <FaGithub />;
-      case 'external':
-        return <FaExternalLinkAlt />;
-      case 'download':
-        return <FaDownload />;
+      case "github":
+        return (
+          <IconWrapper>
+            <Icons.FaGithub />
+          </IconWrapper>
+        );
+      case "external":
+        return (
+          <IconWrapper>
+            <Icons.FaExternalLinkAlt />
+          </IconWrapper>
+        );
+      case "download":
+        return (
+          <IconWrapper>
+            <Icons.FaDownload />
+          </IconWrapper>
+        );
       default:
         return null;
     }
@@ -258,9 +295,9 @@ const Projects: React.FC = () => {
       key={project.id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
+      transition={{
         duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1]
+        ease: [0.25, 0.1, 0.25, 1],
       }}
     >
       <ProjectContent>
@@ -268,7 +305,10 @@ const Projects: React.FC = () => {
           {project.title}
           {project.stars && project.stars >= 50 && (
             <StarsCount>
-              <FaStar /> {project.stars}
+              <IconWrapper>
+                <Icons.FaStar />
+              </IconWrapper>{" "}
+              {project.stars}
             </StarsCount>
           )}
         </Title>
@@ -283,12 +323,20 @@ const Projects: React.FC = () => {
         {project.actions.map((action, index) => (
           <LinkButton
             key={index}
-            href={action.type === 'link' ? action.url : '#'}
-            onClick={action.type === 'modal' ? () => handleActionClick(action) : undefined}
-            target={action.type === 'link' ? '_blank' : undefined}
-            rel={action.type === 'link' ? 'noopener noreferrer' : undefined}
+            href={action.type === "link" ? action.url : "#"}
+            onClick={
+              action.type === "modal"
+                ? () => handleActionClick(action)
+                : undefined
+            }
+            target={action.type === "link" ? "_blank" : undefined}
+            rel={action.type === "link" ? "noopener noreferrer" : undefined}
           >
-            {getIconComponent(action.icon)} {t(`projects.actions.${action.translationKey}`, action.translationKey)}
+            {getIconComponent(action.icon)}{" "}
+            {t(
+              `projects.actions.${action.translationKey}`,
+              action.translationKey,
+            )}
           </LinkButton>
         ))}
       </Links>
@@ -296,32 +344,33 @@ const Projects: React.FC = () => {
   );
 
   const handleActionClick = (action: any) => {
-    if (action.type === 'modal') {
+    if (action.type === "modal") {
       setModalContent(action.content);
       setIsModalOpen(true);
     }
   };
 
-  const groupedProjects = projects.reduce<Record<string, ProjectWithMeta[]>>((acc, project) => {
-    const category = project.category;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(project);
-    return acc;
-  }, {});
+  const groupedProjects = projects.reduce<Record<string, ProjectWithMeta[]>>(
+    (acc, project) => {
+      const category = project.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(project);
+      return acc;
+    },
+    {},
+  );
 
   return (
     <Container>
-      <PageTitle>{t('projects.title')}</PageTitle>
+      <PageTitle>{t("projects.title")}</PageTitle>
       {Object.entries(groupedProjects).map(([category, categoryProjects]) => (
         <Section key={category}>
           <SectionTitle>
             {t(`projects.categories.${category}`, category)}
           </SectionTitle>
-          <Grid>
-            {categoryProjects.map(renderProjectCard)}
-          </Grid>
+          <Grid>{categoryProjects.map(renderProjectCard)}</Grid>
         </Section>
       ))}
       <Modal
@@ -333,4 +382,4 @@ const Projects: React.FC = () => {
   );
 };
 
-export default Projects; 
+export default Projects;
