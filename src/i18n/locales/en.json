@@ -1,0 +1,112 @@
+{
+  "home": {
+    "greeting": "Hello, I'm",
+    "role": "Full Stack Developer",
+    "intro": "Hi, I'm a Full Stack Developer and crypto enthusiast. I create modern web applications and contribute to open source projects.",
+    "messages": {
+      "about": "Here are a couple of facts about me:",
+      "contact": "Want to get in touch? Here's how you can reach me:",
+      "blog": "I have a blog! Check this out:"
+    },
+    "stats": {
+      "experience": {
+        "value": "3+",
+        "label": "Years of Experience",
+        "link": "View Experience →"
+      },
+      "projects": {
+        "value": "50+",
+        "label": "Completed Projects",
+        "link": "View Projects →"
+      },
+      "opensource": {
+        "value": "20+",
+        "label": "Open Source Contributions",
+        "link": "View Tech Stack →"
+      }
+    },
+    "navigation": {
+      "blog": "Latest Posts",
+      "projects": "Projects",
+      "experience": "Experience"
+    },
+    "contact": {
+      "title": "Let's Connect",
+      "github": "GitHub",
+      "email": "Email Me",
+      "telegram": "Telegram"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "blog": "Blog"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Here I share not only programming information, but also personal thoughts, hobbies, and interesting findings.",
+    "back": "Back to Blog",
+    "loading": "Loading post...",
+    "notFound": "Post not found",
+    "readMore": "Read More"
+  },
+  "about": {
+    "title": "About Me",
+    "intro": "Hi, I'm Andrey Onischenko, a Full Stack Developer passionate about creating exceptional web experiences.",
+    "skills": {
+      "title": "Skills",
+      "frontend": "Frontend Development",
+      "backend": "Backend Development",
+      "devops": "DevOps",
+      "tools": "Tools & Technologies"
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "years": "Years",
+    "present": "Present",
+    "responsibilities": "Responsibilities",
+    "technologies": "Technologies Used"
+  },
+  "projects": {
+    "title": "Projects",
+    "categories": {
+      "personal": "Personal Projects",
+      "opensource": "Open Source",
+      "commercial": "Commercial Projects"
+    },
+    "actions": {
+      "viewCode": "View Code",
+      "viewProject": "View Project",
+      "install": "Install"
+    },
+    "install": {
+      "title": "Installation Instructions",
+      "archLinux": "Arch Linux",
+      "debianUbuntu": "Debian/Ubuntu",
+      "rpmBased": "RPM-based",
+      "rpmNote": "<a href='https://github.com/cucumber-sp/yandex-music-linux/releases/latest' target='_blank' rel='noopener noreferrer'>Download RPM package from releases page</a>",
+      "downloadRpm": "Download RPM from releases"
+    },
+    "items": {
+      "yandex-music-linux": {
+        "title": "Yandex Music Linux",
+        "description": "An unofficial Linux client for Yandex Music streaming service, bringing the popular Russian music platform to Linux users. Features offline mode, system integration, and packages for all major Linux distributions."
+      },
+      "personal-website": {
+        "title": "Personal Website",
+        "description": "Modern portfolio website with animations, multilingual support, and a blog system. Built with React, TypeScript, and styled-components."
+      }
+    }
+  },
+  "footer": {
+    "title": "Let's Connect",
+    "subtitle": "Feel free to reach out for collaborations or just a friendly hello",
+    "email": "Email",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "twitter": "Twitter"
+  }
+} 

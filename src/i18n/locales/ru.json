@@ -1,0 +1,112 @@
+{
+  "home": {
+    "greeting": "Привет, я",
+    "role": "Full Stack Разработчик",
+    "intro": "Привет, я Full Stack разработчик и крипто энтузиаст. Я создаю современные веб-приложения и вношу вклад в проекты с открытым исходным кодом.",
+    "messages": {
+      "about": "Немного фактов обо мне:",
+      "contact": "Хотите связаться? Вам сюда:",
+      "blog": "У меня есть блог! Загляните:"
+    },
+    "stats": {
+      "experience": {
+        "value": "3+",
+        "label": "Года в разработке",
+        "link": "Подробнее →"
+      },
+      "projects": {
+        "value": "50+",
+        "label": "Завершенных проектов",
+        "link": "Смотреть →"
+      },
+      "opensource": {
+        "value": "20+",
+        "label": "Коммитов в Open Source",
+        "link": "Технологии →"
+      }
+    },
+    "navigation": {
+      "blog": "Последние Посты",
+      "projects": "Проекты",
+      "experience": "Опыт"
+    },
+    "contact": {
+      "title": "Связаться со мной",
+      "github": "GitHub",
+      "email": "Мыло",
+      "telegram": "Телега"
+    }
+  },
+  "nav": {
+    "home": "Главная",
+    "about": "Обо мне",
+    "projects": "Проекты",
+    "experience": "Опыт",
+    "blog": "Личный блог"
+  },
+  "blog": {
+    "title": "Личный блог",
+    "description": "Здесь я делюсь не только информацией о программировании, но и личными мыслями, увлечениями и интересными находками.",
+    "back": "Назад к блогу",
+    "loading": "Загрузка поста...",
+    "notFound": "Пост не найден",
+    "readMore": "Читать далее"
+  },
+  "about": {
+    "title": "Обо мне",
+    "intro": "Привет, я Андрей Онищенко, Full Stack разработчик, увлеченный созданием исключительных веб-приложений.",
+    "skills": {
+      "title": "Навыки",
+      "frontend": "Frontend Разработка",
+      "backend": "Backend Разработка",
+      "devops": "DevOps",
+      "tools": "Инструменты и Технологии"
+    }
+  },
+  "experience": {
+    "title": "Опыт работы",
+    "years": "Лет",
+    "present": "Настоящее время",
+    "responsibilities": "Обязанности",
+    "technologies": "Используемые технологии"
+  },
+  "projects": {
+    "title": "Проекты",
+    "categories": {
+      "personal": "Личные Проекты",
+      "opensource": "Open Source",
+      "commercial": "Коммерческие Проекты"
+    },
+    "actions": {
+      "viewCode": "Посмотреть код",
+      "viewProject": "Открыть проект",
+      "install": "Установить"
+    },
+    "install": {
+      "title": "Инструкции по установке",
+      "archLinux": "Arch Linux",
+      "debianUbuntu": "Debian/Ubuntu",
+      "rpmBased": "RPM-based",
+      "rpmNote": "<a href='https://github.com/cucumber-sp/yandex-music-linux/releases/latest' target='_blank' rel='noopener noreferrer'>Скачайте RPM пакет со страницы релизов</a>",
+      "downloadRpm": "Скачать RPM с релизов"
+    },
+    "items": {
+      "yandex-music-linux": {
+        "title": "Yandex Music Linux",
+        "description": "Неофициальный Linux клиент для сервиса Яндекс.Музыка, делающий популярную российскую музыкальную платформу доступной пользователям Linux. Включает оффлайн режим, системную интеграцию и пакеты для всех основных дистрибутивов Linux."
+      },
+      "personal-website": {
+        "title": "Персональный Сайт",
+        "description": "Современный сайт-портфолио с анимациями, поддержкой нескольких языков и системой блога. Создан с использованием React, TypeScript и styled-components."
+      }
+    }
+  },
+  "footer": {
+    "title": "Мои Контакты",
+    "subtitle": "Буду рад сотрудничеству или просто дружескому общению",
+    "email": "Почта",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "twitter": "Twitter"
+  }
+} 

@@ -1,0 +1,64 @@
+{
+  "projects": [
+    {
+      "id": "yandex-music-linux",
+      "category": "opensource",
+      "tech": ["Electron", "Shell", "Python", "Nix", "Linux"],
+      "github": "https://github.com/cucumber-sp/yandex-music-linux",
+      "actions": [
+        {
+          "type": "link",
+          "icon": "github",
+          "translationKey": "viewCode",
+          "url": "https://github.com/cucumber-sp/yandex-music-linux"
+        },
+        {
+          "type": "modal",
+          "icon": "download",
+          "translationKey": "install",
+          "content": {
+            "title": "projects.install.title",
+            "sections": [
+              {
+                "type": "archLinux",
+                "title": "projects.install.archLinux",
+                "content": "yay -S yandex-music"
+              },
+              {
+                "type": "debianUbuntu",
+                "title": "projects.install.debianUbuntu",
+                "content": "curl -fsSL https://apt.cucumber-space.online/key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/cucumber-space.key.gpg<br>echo 'deb [signed-by=/etc/apt/keyrings/cucumber-space.key.gpg] https://apt.cucumber-space.online ./' | sudo tee /etc/apt/sources.list.d/cucumber-space.list > /dev/null<br>sudo apt update<br>sudo apt install yandex-music"
+              },
+              {
+                "type": "rpmBased",
+                "title": "projects.install.rpmBased",
+                "content": "rpm -i yandex-music-<version>-1.x86_64.rpm",
+                "note": "projects.install.rpmNote"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "personal-website",
+      "category": "personal",
+      "tech": ["React", "TypeScript", "Styled Components", "Framer Motion", "i18next"],
+      "github": "https://github.com/cucumber-sp/personal-website",
+      "actions": [
+        {
+          "type": "link",
+          "icon": "github",
+          "translationKey": "viewCode",
+          "url": "https://github.com/cucumber-sp/personal-website"
+        },
+        {
+          "type": "link",
+          "icon": "external",
+          "translationKey": "viewProject",
+          "url": "https://cucumber-space.online"
+        }
+      ]
+    }
+  ]
+} 
