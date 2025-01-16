@@ -1,43 +1,56 @@
-/** @type {import('eslint').Linter.Config} */
-export default {
-  root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended'
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true
+import eslint from '@eslint/js';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
+import reactPlugin from 'eslint-plugin-react';
+import hooksPlugin from 'eslint-plugin-react-hooks';
+
+export default [
+  eslint.configs.recommended,
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true
+        }
+      },
+      globals: {
+        window: 'readonly',
+        document: 'readonly',
+        console: 'readonly',
+        module: 'readonly',
+        process: 'readonly',
+        localStorage: 'readonly',
+        navigator: 'readonly',
+        MouseEvent: 'readonly',
+        fetch: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly'
+      }
     },
-    ecmaVersion: 'latest',
-    sourceType: 'module'
-  },
-  plugins: [
-    'react',
-    'react-hooks',
-    '@typescript-eslint'
-  ],
-  settings: {
-    react: {
-      version: 'detect'
+    plugins: {
+      '@typescript-eslint': tseslint,
+      'react': reactPlugin,
+      'react-hooks': hooksPlugin
+    },
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_'
+      }],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error'] }]
+    },
+    settings: {
+      react: {
+        version: 'detect'
+      }
     }
-  },
-  rules: {
-    'react/react-in-jsx-scope': 'off',
-    '@typescript-eslint/no-unused-vars': ['warn', {
-      argsIgnorePattern: '^_',
-      varsIgnorePattern: '^_'
-    }],
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn'
   }
-}; 
+]; 

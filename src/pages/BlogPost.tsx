@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { BlogPost as BlogPostType } from '../types/blog';
-import { FaArrowLeft } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { BlogPost as BlogPostType } from "../types/blog";
+import { FaArrowLeft } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const PostContainer = styled.div`
   padding: 4rem 0;
@@ -26,7 +26,7 @@ const BackButton = styled.button`
   color: var(--accent);
   background: none;
   border: none;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 1rem;
   margin-bottom: 2rem;
   padding: 0.5rem 1rem;
@@ -34,13 +34,17 @@ const BackButton = styled.button`
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -5px;
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background-image: radial-gradient(circle, var(--accent) 0.5px, transparent 0.5px);
+    background-image: radial-gradient(
+      circle,
+      var(--accent) 0.5px,
+      transparent 0.5px
+    );
     background-size: 4px 4px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -50,7 +54,7 @@ const BackButton = styled.button`
 
   &:hover {
     transform: translateX(-5px);
-    
+
     &::before {
       opacity: 0.1;
     }
@@ -58,7 +62,7 @@ const BackButton = styled.button`
 `;
 
 const Title = styled.h1`
-  font-family: 'DotMatrix', monospace;
+  font-family: "DotMatrix", monospace;
   font-size: clamp(2rem, 5vw, 3rem);
   margin-bottom: 1rem;
 `;
@@ -70,7 +74,7 @@ const Meta = styled.div`
 `;
 
 const Date = styled.span`
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   color: var(--accent);
   font-size: 0.9rem;
 `;
@@ -87,15 +91,20 @@ const Tag = styled.span`
   padding: 0.3rem 0.8rem;
   border-radius: 4px;
   font-size: 0.9rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
 `;
 
 const Content = styled.div`
   font-size: 1.1rem;
   line-height: 1.8;
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Mono', monospace;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Space Mono", monospace;
     margin: 2rem 0 1rem;
   }
 
@@ -116,7 +125,8 @@ const Content = styled.div`
     margin: 2rem 0;
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin: 1.5rem 0;
     padding-left: 2rem;
   }
@@ -206,13 +216,13 @@ const CodeHeader = styled.div`
   left: 0;
   right: 0;
   height: 2.5rem;
-  background: #1E1E1E;
+  background: #1e1e1e;
   border-radius: 8px 8px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.9rem;
   color: #d4d4d4;
 `;
@@ -227,7 +237,7 @@ const CopyButton = styled.button`
   background: none;
   border: none;
   color: #858585;
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 0.8rem;
   cursor: pointer;
   display: flex;
@@ -261,14 +271,16 @@ const BlogPost: React.FC = () => {
         // Fetch post metadata
         const response = await fetch(`/blog/posts/${slug}/index.json`);
         if (!response.ok) {
-          throw new Error('Post not found');
+          throw new Error("Post not found");
         }
         const meta = await response.json();
 
         // Fetch post content based on current language
-        const contentResponse = await fetch(`/blog/posts/${slug}/${i18n.language}.md`);
+        const contentResponse = await fetch(
+          `/blog/posts/${slug}/${i18n.language}.md`,
+        );
         if (!contentResponse.ok) {
-          throw new Error('Post content not found');
+          throw new Error("Post content not found");
         }
         const content = await contentResponse.text();
 
@@ -276,10 +288,10 @@ const BlogPost: React.FC = () => {
           ...meta,
           title: meta.title[i18n.language],
           excerpt: meta.excerpt[i18n.language],
-          content: content
+          content: content,
         });
       } catch (error) {
-        console.error('Error fetching blog post:', error);
+        console.error("Error fetching blog post:", error);
         setPost(null);
       } finally {
         setLoading(false);
@@ -303,19 +315,16 @@ const BlogPost: React.FC = () => {
   };
 
   const components = {
-    code({ node, inline, className, children, ...props }: any) {
-      const match = /language-(\w+)/.exec(className || '');
-      const code = String(children).replace(/\n$/, '');
-      
+    code({ inline, className, children, ...props }: any) {
+      const match = /language-(\w+)/.exec(className || "");
+      const code = String(children).replace(/\n$/, "");
+
       return !inline && match ? (
         <CodeBlock>
           <CodeHeader>
             <Language>{match[1]}</Language>
-            <CopyButton 
-              onClick={() => handleCopy(code)}
-              title="Copy code"
-            >
-              {copiedCode === code ? 'Copied!' : 'Copy'}
+            <CopyButton onClick={() => handleCopy(code)} title="Copy code">
+              {copiedCode === code ? "Copied!" : "Copy"}
             </CopyButton>
           </CodeHeader>
           <SyntaxHighlighter
@@ -332,7 +341,7 @@ const BlogPost: React.FC = () => {
           {children}
         </code>
       );
-    }
+    },
   };
 
   if (loading) {
@@ -340,9 +349,9 @@ const BlogPost: React.FC = () => {
       <PostContainer>
         <ContentContainer>
           <BackButton onClick={handleBack}>
-            <FaArrowLeft /> {t('blog.back')}
+            <FaArrowLeft /> {t("blog.back")}
           </BackButton>
-          <p>{t('blog.loading')}</p>
+          <p>{t("blog.loading")}</p>
         </ContentContainer>
       </PostContainer>
     );
@@ -353,9 +362,9 @@ const BlogPost: React.FC = () => {
       <PostContainer>
         <ContentContainer>
           <BackButton onClick={handleBack}>
-            <FaArrowLeft /> {t('blog.back')}
+            <FaArrowLeft /> {t("blog.back")}
           </BackButton>
-          <p>{t('blog.notFound')}</p>
+          <p>{t("blog.notFound")}</p>
         </ContentContainer>
       </PostContainer>
     );
@@ -365,7 +374,7 @@ const BlogPost: React.FC = () => {
     <PostContainer>
       <ContentContainer>
         <BackButton onClick={handleBack}>
-          <FaArrowLeft /> {t('blog.back')}
+          <FaArrowLeft /> {t("blog.back")}
         </BackButton>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -382,7 +391,9 @@ const BlogPost: React.FC = () => {
             </Tags>
           </Meta>
           <Content>
-            <ReactMarkdown components={components}>{post.content}</ReactMarkdown>
+            <ReactMarkdown components={components}>
+              {post.content}
+            </ReactMarkdown>
           </Content>
         </motion.div>
       </ContentContainer>
@@ -390,4 +401,4 @@ const BlogPost: React.FC = () => {
   );
 };
 
-export default BlogPost; 
+export default BlogPost;
