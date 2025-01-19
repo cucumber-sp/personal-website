@@ -32,7 +32,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     document.fonts.ready.then(() => {
       const font = new FontFace(
         "DotMatrix",
-        "url(/fonts/robotronfontelit.woff)",
+        "url(/fonts/robotronfontepica.woff)",
       );
       font
         .load()
